@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thêm Sách - Quản trị Thư viện điện tử FPT Polytechnic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/Image/logolibary.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #198754 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Section */
+        .header-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .page-title {
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-title i {
+            color: #198754;
+            font-size: 2rem;
+        }
+
+        .breadcrumb {
+            background: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb-item a {
+            color: #198754;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item.active {
+            color: #718096;
+        }
+
+        /* Form Container */
+        .form-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-card {
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-title i {
+            color: #198754;
+            font-size: 1.1rem;
+        }
+
+        /* Form Controls */
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control,
+        .form-select {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.875rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #198754;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: white;
+        }
+
+        .form-control.is-invalid {
+            border-color: #e53e3e;
+        }
+
+        .invalid-feedback {
+            display: block;
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .required-mark {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+
+        /* File Upload Areas */
+        .file-upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(247, 250, 252, 0.8);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .file-upload-area:hover {
+            border-color: #198754;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .file-upload-icon {
+            font-size: 3rem;
+            color: #a0aec0;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-area:hover .file-upload-icon {
+            color: #198754;
+        }
+
+        .file-upload-text {
+            color: #718096;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-btn {
+            background: linear-gradient(135deg, #198754 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Preview Areas */
+        .preview-container {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .image-preview {
+            max-width: 250px;
+            max-height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 1rem;
+            object-fit: cover;
+        }
+
+        /* Detailed Images Preview */
+        .detailed-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .detailed-image-wrapper {
+            position: relative;
+            width: 150px;
+            text-align: center;
+        }
+
+        .detailed-image-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.5rem;
+        }
+
+        .remove-detailed-image-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .remove-detailed-image-btn:hover {
+            background: #c53030;
+        }
+
+        /* Quantity Controls */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            border-color: #198754;
+            color: #198754;
+        }
+
+        .quantity-input {
+            width: 210px;
+            text-align: center;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #198754 0%, #764ba2 100%);
+            border: none;
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #718096;
+            border: none;
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #4a5568;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(113, 128, 150, 0.3);
+        }
+
+        .btn-danger {
+            background: #e53e3e;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background: #c53030;
+            transform: translateY(-1px);
+        }
+        .btn-back {
+            background: rgba(113, 128, 150, 0.1);
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-back:hover {
+            background: #718096;
+            color: white;
+            border-color: #718096;
+            transform: translateY(-2px);
+        }
+        /* Progress Bar */
+        .upload-progress {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .upload-progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #198754 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0;
+            }
+
+            .form-wrapper {
+                padding: 2rem 1.5rem;
+            }
+
+            .section-card {
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .header-section {
+                padding: 1.5rem;
+            }
+
+            .col-lg-4 {
+                margin-top: 2rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-in {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        /* Action Buttons Section */
+        .action-buttons {
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .action-buttons .btn {
+            margin: 0.5rem;
+            min-width: 150px;
+        }
+
+        /* File info display */
+        .file-info {
+            background: rgba(248, 250, 252, 0.8);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .file-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-info-item:last-child {
+            margin-bottom: 0;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="container animate-slide-in">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+                <div>
+                    <h1 class="page-title">
+                        <i class="fas fa-book-medical"></i>
+                        Thêm Sách Mới
+                    </h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/book">Quản lý sách</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thêm sách</li>
+                        </ol>
+                    </nav>
+                </div>
+                <a href="/admin/book" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>Quay lại
+                </a>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-wrapper">
+            <form onsubmit="return validateForm()" enctype="multipart/form-data">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-lg-8 col-12">
+                        <!-- Book Information -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Thông tin sách
+                            </h3>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="title" class="form-label">
+                                        Tiêu đề sách <span class="required-mark text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="title" name="title" 
+                                           placeholder="Nhập tiêu đề sách" maxlength="255" required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="author" class="form-label">
+                                        Tác giả <span class="required-mark text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="author" name="author" 
+                                           placeholder="Nhập tên tác giả" maxlength="255" required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="republish" class="form-label">
+                                        Nhà xuất bản
+                                    </label>
+                                    <input type="text" class="form-control" id="republish" name="republish" 
+                                           placeholder="Nhập nhà xuất bản" maxlength="100">
+                                    <small class="form-text text-muted">Tối đa 100 ký tự</small>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="category" class="form-label">
+                                        Danh mục <span class="required-mark text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="category" name="category" required>
+                                        <option value="">Chọn danh mục</option>
+                                        <option value="1">Văn học</option>
+                                        <option value="2">Khoa học</option>
+                                        <option value="3">Lịch sử</option>
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="review" class="form-label">
+                                    Mô tả / Đánh giá
+                                </label>
+                                <textarea class="form-control" id="review" name="review" rows="4" 
+                                          placeholder="Nhập mô tả hoặc đánh giá sách..." maxlength="1000"></textarea>
+                                <small class="form-text text-muted">Tối đa 1000 ký tự</small>
+                            </div>
+                        </div>
+
+                        <!-- Inventory Information -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="fas fa-database"></i>
+                                Thông tin kho
+                            </h3>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="totalQuantity" class="form-label">
+                                        Tổng số lượng <span class="required-mark text-danger">*</span>
+                                    </label>
+                                    <div class="quantity-control">
+                                        <button type="button" class="quantity-btn" onclick="decreaseQuantity('totalQuantity')">-</button>
+                                        <input type="number" class="form-control quantity-input" id="totalQuantity" name="totalQuantity" 
+                                               placeholder="Nhập tổng số lượng" min="0" required>
+                                        <button type="button" class="quantity-btn" onclick="increaseQuantity('totalQuantity')">+</button>
+                                    </div>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-lg-4 col-12">
+                        <!-- Cover Image Upload -->
+                        <div class="section-card mb-4">
+                            <h3 class="section-title">
+                                <i class="fas fa-image"></i>
+                                Ảnh bìa
+                            </h3>
+
+                            <div class="file-upload-area" onclick="document.getElementById('image').click()">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <div class="file-upload-text">
+                                    <p class="mb-2 fw-semibold">Nhấp để tải lên ảnh bìa sách</p>
+                                    <small class="text-muted">Định dạng: JPG, PNG, WEBP<br>Dung lượng tối đa: 5MB</small>
+                                </div>
+                                <button type="button" class="file-upload-btn mt-2">
+                                    <i class="fas fa-upload me-2"></i>Chọn ảnh
+                                </button>
+                            </div>
+
+                            <input type="file" id="image" name="imageFile" class="file-input" 
+                                   accept="image/jpeg,image/png,image/webp" onchange="previewImage(this)">
+
+                            <div id="imagePreview" class="preview-container" style="display: none;">
+                                <img id="preview" src="#" alt="Preview" class="image-preview">
+                                <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeImage()">
+                                    <i class="fas fa-trash me-1"></i>Xóa ảnh
+                                </button>
+                            </div>
+
+                            <div id="imageInfo" class="file-info"></div>
+                            <div id="imageProgress" class="upload-progress">
+                                <div class="upload-progress-bar"></div>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Images Upload -->
+                        <div class="section-card mb-4">
+                            <h3 class="section-title">
+                                <i class="fas fa-images"></i>
+                                Ảnh chi tiết
+                            </h3>
+
+                            <div class="file-upload-area" onclick="document.getElementById('detailedImages').click()">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <div class="file-upload-text">
+                                    <p class="mb-2 fw-semibold">Nhấp để tải lên nhiều ảnh chi tiết sách</p>
+                                    <small class="text-muted">Định dạng: JPG, PNG, WEBP<br>Dung lượng tối đa: 5MB mỗi ảnh</small>
+                                </div>
+                                <button type="button" class="file-upload-btn mt-2">
+                                    <i class="fas fa-upload me-2"></i>Chọn nhiều ảnh
+                                </button>
+                            </div>
+
+                            <input type="file" id="detailedImages" name="detailedImages" class="file-input" 
+                                   accept="image/jpeg,image/png,image/webp" multiple onchange="previewDetailedImages(this)">
+
+                            <div id="detailedImagesPreview" class="detailed-preview-container" style="display: none;"></div>
+
+                            <div id="detailedImagesInfo" class="file-info"></div>
+                            <div id="detailedImagesProgress" class="upload-progress">
+                                <div class="upload-progress-bar"></div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <h3 class="section-title">
+                                <i class="fas fa-save"></i>
+                                Thao tác
+                            </h3>
+
+                            <div class="d-flex flex-column gap-3">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Lưu sách
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="clearFormDraft()">
+                                    <i class="fas fa-trash me-2"></i>Xóa bản nháp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+        // Cover Image Preview
+        function previewImage(input) {
+            const previewContainer = document.getElementById('imagePreview');
+            const previewImage = document.getElementById('preview');
+            const file = input.files[0];
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+            if (file) {
+                if (!validTypes.includes(file.type)) {
+                    showNotification('Vui lòng chọn file ảnh (JPG, PNG, WEBP)!', 'error');
+                    input.value = '';
+                    previewContainer.style.display = 'none';
+                    return;
+                }
+                if (file.size > maxSize) {
+                    showNotification('Kích thước file ảnh không được vượt quá 5MB!', 'error');
+                    input.value = '';
+                    previewContainer.style.display = 'none';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    input.closest('.section-card').querySelector('.file-upload-area').style.display = 'none';
+                    showFileInfo(file, 'imageInfo');
+                    simulateUploadProgress('imageProgress', 1500);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        }
+
+        // Remove Cover Image
+        function removeImage() {
+            const input = document.getElementById('image');
+            const previewContainer = document.getElementById('imagePreview');
+            input.value = '';
+            previewContainer.style.display = 'none';
+            input.closest('.section-card').querySelector('.file-upload-area').style.display = 'block';
+            document.getElementById('imageInfo').style.display = 'none';
+        }
+
+        // Detailed Images Preview
+        function previewDetailedImages(input) {
+            const previewContainer = document.getElementById('detailedImagesPreview');
+            const infoContainer = document.getElementById('detailedImagesInfo');
+            const files = Array.from(input.files);
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+            // Validate files
+            const validFiles = files.filter(file => {
+                if (!validTypes.includes(file.type)) {
+                    showNotification(`File ${file.name}: Vui lòng chọn file ảnh (JPG, PNG, WEBP)!`, 'error');
+                    return false;
+                }
+                if (file.size > maxSize) {
+                    showNotification(`File ${file.name}: Kích thước file không được vượt quá 5MB!`, 'error');
+                    return false;
+                }
+                return true;
+            });
+
+            if (validFiles.length === 0) {
+                input.value = ''; // Clear invalid files
+                previewContainer.style.display = 'none';
+                infoContainer.style.display = 'none';
+                return;
+            }
+
+            // Clear previous previews
+            previewContainer.innerHTML = '';
+            infoContainer.innerHTML = '';
+
+            // Show upload area if no valid files
+            if (validFiles.length > 0) {
+                input.closest('.section-card').querySelector('.file-upload-area').style.display = 'none';
+                previewContainer.style.display = 'flex';
+                infoContainer.style.display = 'block';
+                simulateUploadProgress('detailedImagesProgress', 1500 * (validFiles.length / 5)); // Adjust duration based on number of files
+            }
+
+            // Create preview for each valid file
+            validFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'detailed-image-wrapper';
+                    wrapper.innerHTML = `
+                        <img src="${e.target.result}" alt="Detailed Preview ${index}" class="detailed-image-preview">
+                        <button type="button" class="remove-detailed-image-btn" onclick="removeDetailedImage(this, ${index})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    previewContainer.appendChild(wrapper);
+
+                    // Show file info
+                    const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                    const fileInfoItem = document.createElement('div');
+                    fileInfoItem.className = 'file-info-item';
+                    fileInfoItem.innerHTML = `
+                        <span><i class="fas fa-file me-2"></i>${file.name}</span>
+                        <span>${fileSize} MB</span>
+                    `;
+                    infoContainer.appendChild(fileInfoItem);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Remove Detailed Image
+        function removeDetailedImage(button, index) {
+            const input = document.getElementById('detailedImages');
+            const previewContainer = document.getElementById('detailedImagesPreview');
+            const infoContainer = document.getElementById('detailedImagesInfo');
+
+            // Get current files
+            const files = Array.from(input.files);
+            files.splice(index, 1); // Remove file at index
+
+            // Update file input
+            const dataTransfer = new DataTransfer();
+            files.forEach(file => dataTransfer.items.add(file));
+            input.files = dataTransfer.files;
+
+            // Re-render previews
+            if (files.length > 0) {
+                previewDetailedImages(input);
+            } else {
+                previewContainer.style.display = 'none';
+                infoContainer.style.display = 'none';
+                input.closest('.section-card').querySelector('.file-upload-area').style.display = 'block';
+            }
+        }
+
+        // Reset Form
+        function resetForm() {
+            // Reset cover image
+            removeImage();
+
+            // Reset detailed images
+            const detailedInput = document.getElementById('detailedImages');
+            const detailedPreviewContainer = document.getElementById('detailedImagesPreview');
+            const detailedInfoContainer = document.getElementById('detailedImagesInfo');
+            detailedInput.value = '';
+            detailedPreviewContainer.style.display = 'none';
+            detailedPreviewContainer.innerHTML = '';
+            detailedInfoContainer.style.display = 'none';
+            detailedInfoContainer.innerHTML = '';
+            detailedInput.closest('.section-card').querySelector('.file-upload-area').style.display = 'block';
+
+            // Reset other fields
+            document.getElementById('title').value = '';
+            document.getElementById('author').value = '';
+            document.getElementById('republish').value = '';
+            document.getElementById('category').value = '';
+            document.getElementById('review').value = '';
+            document.getElementById('totalQuantity').value = '';
+            document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+            document.querySelectorAll('.invalid-feedback').forEach(el => el.textContent = '');
+        }
+
+        // Show File Information
+        function showFileInfo(file, infoId) {
+            const fileSize = (file.size / 1024 / 1024).toFixed(2);
+            const fileType = file.type;
+            const fileName = file.name;
+
+            const infoElement = document.getElementById(infoId);
+            infoElement.innerHTML = `
+                <div class="file-info-item">
+                    <span><i class="fas fa-file me-2"></i>Tên file:</span>
+                    <span>${fileName}</span>
+                </div>
+                <div class="file-info-item">
+                    <span><i class="fas fa-weight me-2"></i>Dung lượng:</span>
+                    <span>${fileSize} MB</span>
+                </div>
+                <div class="file-info-item">
+                    <span><i class="fas fa-tag me-2"></i>Định dạng:</span>
+                    <span>${fileType}</span>
+                </div>
+            `;
+            infoElement.style.display = 'block';
+        }
+
+        // Quantity Control Functions
+        function increaseQuantity(inputId) {
+            const input = document.getElementById(inputId);
+            const currentValue = parseInt(input.value) || 0;
+            input.value = currentValue + 1;
+            validateQuantity();
+        }
+
+        function decreaseQuantity(inputId) {
+            const input = document.getElementById(inputId);
+            const currentValue = parseInt(input.value) || 0;
+            const minValue = parseInt(input.min) || 0;
+
+            if (currentValue > minValue) {
+                input.value = currentValue - 1;
+                validateQuantity();
+            }
+        }
+
+        // Validate Quantity Inputs
+        function validateQuantity() {
+            const totalQuantity = parseInt(document.getElementById('totalQuantity').value) || 0;
+            const totalQuantityInput = document.getElementById('totalQuantity');
+
+            if (totalQuantity < 1) {
+                totalQuantityInput.setCustomValidity('Tổng số lượng phải lớn hơn 0');
+                totalQuantityInput.classList.add('is-invalid');
+                document.querySelector('#totalQuantity + .invalid-feedback').textContent = 'Tổng số lượng phải lớn hơn 0';
+            } else {
+                totalQuantityInput.setCustomValidity('');
+                totalQuantityInput.classList.remove('is-invalid');
+                document.querySelector('#totalQuantity + .invalid-feedback').textContent = '';
+            }
+        }
+
+        // Show Notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = `
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            `;
+
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'} me-2"></i>
+                    <span>${message}</span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Form Validation Before Submit
+        function validateForm() {
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const category = document.getElementById('category').value;
+            const totalQuantity = parseInt(document.getElementById('totalQuantity').value) || 0;
+
+            let isValid = true;
+            let errors = [];
+
+            if (!title) {
+                errors.push('Tiêu đề sách không được để trống');
+                document.getElementById('title').classList.add('is-invalid');
+                document.querySelector('#title + .invalid-feedback').textContent = 'Tiêu đề sách không được để trống';
+                isValid = false;
+            } else {
+                document.getElementById('title').classList.remove('is-invalid');
+                document.querySelector('#title + .invalid-feedback').textContent = '';
+            }
+
+            if (!author) {
+                errors.push('Tác giả không được để trống');
+                document.getElementById('author').classList.add('is-invalid');
+                document.querySelector('#author + .invalid-feedback').textContent = 'Tác giả không được để trống';
+                isValid = false;
+            } else {
+                document.getElementById('author').classList.remove('is-invalid');
+                document.querySelector('#author + .invalid-feedback').textContent = '';
+            }
+
+            if (!category) {
+                errors.push('Vui lòng chọn danh mục');
+                document.getElementById('category').classList.add('is-invalid');
+                document.querySelector('#category + .invalid-feedback').textContent = 'Vui lòng chọn danh mục';
+                isValid = false;
+            } else {
+                document.getElementById('category').classList.remove('is-invalid');
+                document.querySelector('#category + .invalid-feedback').textContent = '';
+            }
+
+            if (totalQuantity < 1) {
+                errors.push('Tổng số lượng phải lớn hơn 0');
+                document.getElementById('totalQuantity').classList.add('is-invalid');
+                document.querySelector('#totalQuantity + .invalid-feedback').textContent = 'Tổng số lượng phải lớn hơn 0';
+                isValid = false;
+            } else {
+                document.getElementById('totalQuantity').classList.remove('is-invalid');
+                document.querySelector('#totalQuantity + .invalid-feedback').textContent = '';
+            }
+
+            if (!isValid) {
+                errors.forEach(error => showNotification(error, 'error'));
+                return false;
+            }
+
+            showNotification('Dữ liệu đã được gửi (mô phỏng)!', 'success');
+            return false; // Prevent form submission since there's no backend
+        }
+
+        // Upload Progress Simulation
+        function simulateUploadProgress(progressId, duration = 2000) {
+            const progressBar = document.querySelector(`#${progressId} .upload-progress-bar`);
+            const progressContainer = document.getElementById(progressId);
+
+            progressContainer.style.display = 'block';
+
+            let progress = 0;
+            const increment = 100 / (duration / 50);
+
+            const interval = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                    }, 500);
+                }
+                progressBar.style.width = progress + '%';
+            }, 50);
+        }
+
+        // Character Counter for Review Textarea
+        function updateCharacterCount() {
+            const reviewTextarea = document.getElementById('review');
+            const maxLength = 1000;
+
+            if (reviewTextarea) {
+                const charCountElement = document.createElement('small');
+                charCountElement.className = 'form-text';
+                charCountElement.id = 'reviewCharCount';
+
+                reviewTextarea.addEventListener('input', function () {
+                    const currentLength = this.value.length;
+                    const remaining = maxLength - currentLength;
+
+                    let existingCounter = document.getElementById('reviewCharCount');
+                    if (!existingCounter) {
+                        this.parentNode.appendChild(charCountElement);
+                        existingCounter = charCountElement;
+                    }
+
+                    existingCounter.textContent = `${currentLength}/${maxLength} ký tự`;
+
+                    if (remaining < 50) {
+                        existingCounter.className = 'form-text text-warning';
+                    } else if (remaining < 0) {
+                        existingCounter.className = 'form-text text-danger';
+                        this.value = this.value.substring(0, maxLength);
+                    } else {
+                        existingCounter.className = 'form-text text-muted';
+                    }
+                });
+            }
+        }
+
+        // Drag and Drop Functionality for Image Uploads
+        function initializeDragAndDrop() {
+            const fileUploadAreas = document.querySelectorAll('.file-upload-area');
+
+            fileUploadAreas.forEach(area => {
+                area.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    this.style.borderColor = '#198754';
+                    this.style.background = 'rgba(102, 126, 234, 0.1)';
+                });
+
+                area.addEventListener('dragleave', function (e) {
+                    e.preventDefault();
+                    this.style.borderColor = '#cbd5e0';
+                    this.style.background = 'rgba(247, 250, 252, 0.8)';
+                });
+
+                area.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    this.style.borderColor = '#cbd5e0';
+                    this.style.background = 'rgba(247, 250, 252, 0.8)';
+
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const fileInput = this.parentNode.querySelector('input[type="file"]');
+                        const dt = new DataTransfer();
+                        Array.from(files).forEach(file => dt.items.add(file));
+                        fileInput.files = dt.files;
+
+                        const changeEvent = new Event('change', { bubbles: true });
+                        fileInput.dispatchEvent(changeEvent);
+                    }
+                });
+            });
+        }
+
+        // Initialize All Functionality When DOM is Loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize drag and drop
+            initializeDragAndDrop();
+
+            // Initialize character counter
+            updateCharacterCount();
+
+            // Add form submit validation
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    if (!validateForm()) {
+                        e.preventDefault();
+                        return false;
+                    }
+
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }, 2000);
+                });
+            }
+
+            // Add quantity input event listeners
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            quantityInputs.forEach(input => {
+                input.addEventListener('change', validateQuantity);
+                input.addEventListener('input', validateQuantity);
+            });
+
+            // Add animation to form sections
+            const sectionCards = document.querySelectorAll('.section-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'slideInUp 0.6s ease-out';
+                    }
+                });
+            });
+
+            sectionCards.forEach(card => {
+                observer.observe(card);
+            });
+
+            // Debug: Log if right column is present
+            const rightColumn = document.querySelector('.col-lg-4');
+            if (!rightColumn) {
+                console.error('Right column (col-lg-4) not found in the DOM');
+            } else {
+                console.log('Right column (col-lg-4) is present in the DOM');
+                console.log('Right column styles:', window.getComputedStyle(rightColumn));
+            }
+
+            // Debug: Log viewport width
+            console.log('Viewport width:', window.innerWidth);
+        });
+    </script>
+</body>
+</html>

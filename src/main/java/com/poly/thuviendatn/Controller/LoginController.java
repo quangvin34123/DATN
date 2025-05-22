@@ -8,8 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/auth")
 public class LoginController {
 
-@GetMapping("/login")
-public String showLoginPage() {
-    return "Account/login"; // Thymeleaf sẽ tìm tệp login.html trong thư mục templates/Account/
-}
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "Public/login"; // login.html trong templates/Public/
+    }
+
+    @GetMapping("/password/success")
+    public String passwordChangeSuccess() {
+        return "Public/password-change-success"; // success-password.html trong templates/Account/
+    }
+
+    @GetMapping("/password/fail")
+    public String passwordChangeFail() {
+        return "Public/password-change-failed"; // fail-password.html trong templates/Account/
+    }
 }

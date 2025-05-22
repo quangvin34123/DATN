@@ -16,6 +16,12 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("books", bookService.getAllBooks());
-        return "Home/home";
+        return "Public/home";
+    }
+
+        @GetMapping("/aboutus")
+    public String gioithieu(Model model) {
+        model.addAttribute("books", bookService.getAllBooks());
+        return "Layout/gioithieu";
     }
 }

@@ -1,0 +1,280 @@
+/* === ADMIN STYLES === */
+
+/* General Admin Layout */
+.admin-main-section {
+    padding-top: 80px; /* Account for fixed header */
+    min-height: calc(100vh - 60px); /* Ensure full height minus header */
+    background: #f8f9fa; /* Light background from style.css */
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Container for Sidebar and Main Content */
+.container-fluid {
+    padding-left: 30px; /* Keep the left padding */
+}
+
+/* Admin Sidebar */
+.admin-side-panel {
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+}
+
+/* Ensure sidebar and main content match height */
+.admin-side-panel,
+.admin-main-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-side-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #198754; /* Primary color from layout.css */
+    padding-bottom: 10px;
+}
+
+.admin-side-item {
+    margin-bottom: 10px;
+}
+
+.admin-side-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    color: #333 !important;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.admin-side-link:hover,
+.admin-side-link.active {
+    background: #e6f4ea; /* Hover background from layout.css */
+    color: #198754 !important; /* Primary color */
+    font-weight: 600;
+}
+
+.admin-side-link i {
+    font-size: 1.2rem;
+    color: #198754;
+}
+
+/* Main Content Area */
+/* .admin-main-content {
+    padding: 20px;
+} */
+
+.admin-content-card {
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+
+.management-section {
+    flex-grow: 1; /* Allow the section to grow and fill the card */
+}
+
+.admin-section-title {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.admin-section-title h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.admin-title-line {
+    width: 100px;
+    height: 3px;
+    background: #198754; /* Primary color */
+    margin: 10px auto;
+}
+
+/* Table Styles */
+.admin-table-wrapper {
+    overflow-x: auto;
+    flex-grow: 1; /* Allow table wrapper to grow */
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Shadow from style.css */
+    flex-grow: 1; /* Allow table to grow */
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 15px;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.admin-table th {
+    background: #f8f9fa; /* Light background */
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+}
+
+.admin-table tr {
+    transition: background 0.3s ease;
+}
+
+.admin-table tr:hover {
+    background: #e6f4ea; /* Hover color from layout.css */
+}
+
+.admin-table td {
+    border-bottom: 1px solid #eee;
+}
+
+/* Action Buttons */
+.admin-action-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    margin-right: 5px;
+    transition: all 0.3s ease;
+}
+
+.admin-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(25, 135, 84, 0.2); /* Shadow from style.css */
+}
+
+.btn-success.admin-action-btn {
+    background: #198754; /* Primary color */
+}
+
+.btn-success.admin-action-btn:hover {
+    background: #146c43; /* Darker shade from style.css */
+}
+
+.btn-danger.admin-action-btn {
+    background: #dc3545;
+}
+
+.btn-danger.admin-action-btn:hover {
+    background: #b02a37;
+}
+
+/* Add Button */
+.admin-add-btn-container {
+    margin-top: 20px;
+    text-align: right;
+    padding: 20px;
+    
+}
+
+
+
+.admin-add-btn {
+    background: #198754; /* Primary color */
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 25px; /* Rounded corners from style.css */
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.admin-add-btn:hover {
+    background: #146c43; /* Darker shade */
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(25, 135, 84, 0.2); /* Shadow from style.css */
+}
+
+.admin-add-btn i {
+    font-size: 1rem;
+}
+
+
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+    .row {
+        flex-direction: column; /* Stack sidebar and content on smaller screens */
+    }
+
+    .admin-side-panel {
+        max-height: none; /* Remove max height on mobile */
+        width: 100%; /* Full width on mobile */
+        margin-bottom: 20px;
+    }
+
+    .admin-main-content {
+        padding: 15px;
+    }
+
+    .admin-content-card {
+        padding: 20px;
+    }
+
+    .admin-section-title h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-table th,
+    .admin-table td {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+
+    .admin-action-btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+
+    .admin-add-btn {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Scrollbar for Sidebar */
+.admin-side-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.admin-side-panel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.admin-side-panel::-webkit-scrollbar-thumb {
+    background: #198754; /* Primary color */
+    border-radius: 4px;
+}
+
+.admin-side-panel::-webkit-scrollbar-thumb:hover {
+    background: #146c43; /* Darker shade */
+}
