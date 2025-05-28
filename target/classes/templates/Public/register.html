@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký - Thư viện điện tử</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Css/style.css" />
+    <link rel="stylesheet" href="/Css/layout.css" />
+    <link rel="icon" type="image/png" href="/Image/logolibary.png">
+</head>
+<body>
+    <div th:replace="Layout/header :: header"></div>
+    <div class="bg-blur"></div>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header d-flex align-items-center">
+                <img src="/Image/logoxoaphong.png" alt="Logo" class="login-logo" />
+                <div class="login-text">
+                    <h2>THƯ VIỆN ĐIỆN TỬ</h2>
+                    <h1>FPT POLYTECHNIC</h1>
+                </div>
+            </div>
+
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+            <form id="register-form" th:action="@{/auth/register}" method="post" th:object="${accountForm}">
+                <h5 class="text-center mb-4">Đăng ký tài khoản mới</h5>
+
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="username" name="username" th:field="*{username}" placeholder="Tên đăng nhập" required />
+                    <div th:errors="*{username}" class="text-danger small"></div>
+                </div>
+
+                <div class="mb-3">
+                    <input type="email" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Email" required />
+                    <div th:errors="*{email}" class="text-danger small"></div>
+                </div>
+
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="password" name="password" th:field="*{password}" placeholder="Mật khẩu" minlength="6" required />
+                    <div th:errors="*{password}" class="text-danger small"></div>
+                </div>
+
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="confirm-password" name="confirmPassword" placeholder="Xác nhận mật khẩu" minlength="6" required />
+                    <div th:if="${passwordMismatch}" class="text-danger small">Mật khẩu và xác nhận mật khẩu không khớp!</div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Đăng ký</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', function (e) {
+            const pw = document.getElementById('password').value;
+            const cpw = document.getElementById('confirm-password').value;
+            if (pw !== cpw) {
+                e.preventDefault();
+                alert('Mật khẩu và xác nhận mật khẩu không khớp!');
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

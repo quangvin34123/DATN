@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ThuviendatnApplication<thuviendatn>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.poly.thuviendatn.ThuviendatnApplication",
+            "projectName": "thuviendatn",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

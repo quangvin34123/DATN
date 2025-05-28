@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="vi">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Thêm Tài Khoản - Quản trị Thư viện điện tử FPT Polytechnic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/Image/logolibary.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #198754 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Section */
+        .header-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .page-title {
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-title i {
+            color: #198754;
+            font-size: 2rem;
+        }
+
+        .breadcrumb {
+            background: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb-item a {
+            color: #198754;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item.active {
+            color: #718096;
+        }
+
+        /* Form Container */
+        .form-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-card {
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-title i {
+            color: #198754;
+            font-size: 1.1rem;
+        }
+
+        /* Form Controls */
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.875rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #198754;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: white;
+        }
+
+        .form-control.is-invalid {
+            border-color: #e53e3e;
+        }
+
+        .invalid-feedback {
+            display: block;
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .required-mark {
+            color: #e53e3e;
+            font-weight: 600;
+        }
+
+        /* File Upload */
+        .file-upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(247, 250, 252, 0.8);
+            cursor: pointer;
+        }
+
+        .file-upload-area:hover {
+            border-color: #198754;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .file-upload-icon {
+            font-size: 3rem;
+            color: #a0aec0;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-area:hover .file-upload-icon {
+            color: #198754;
+        }
+
+        .file-upload-text {
+            color: #718096;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-btn {
+            background: linear-gradient(135deg, #198754 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Image Preview */
+        .image-preview-container {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 1rem;
+            object-fit: cover;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #198754 0%, #764ba2 100%);
+            border: none;
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #718096;
+            border: none;
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #4a5568;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(113, 128, 150, 0.3);
+        }
+
+        .btn-danger {
+            background: #e53e3e;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background: #c53030;
+            transform: translateY(-1px);
+        }
+
+        .btn-back {
+            background: rgba(113, 128, 150, 0.1);
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-back:hover {
+            background: #718096;
+            color: white;
+            border-color: #718096;
+            transform: translateY(-2px);
+        }
+
+        /* Checkbox */
+        .form-check-input {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 6px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .form-check-input:checked {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        .form-check-label {
+            font-weight: 500;
+            color: #4a5568;
+            margin-left: 0.5rem;
+        }
+
+        /* Password strength indicator */
+        .password-strength {
+            height: 5px;
+            border-radius: 3px;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .strength-weak {
+            background: #e53e3e;
+            width: 33%;
+        }
+
+        .strength-medium {
+            background: #f56500;
+            width: 66%;
+        }
+
+        .strength-strong {
+            background: #38a169;
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0;
+            }
+            
+            .form-wrapper {
+                padding: 2rem 1.5rem;
+            }
+            
+            .section-card {
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .header-section {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-in {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        /* Action Buttons Section */
+        .action-buttons {
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .action-buttons .btn {
+            margin: 0.5rem;
+            min-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container animate-slide-in">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+                <div>
+                    <h1 class="page-title">
+                        <i class="fas fa-user-plus"></i>
+                        Thêm Tài Khoản Mới
+                    </h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/useraccount">Quản lý tài khoản</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thêm tài khoản</li>
+                        </ol>
+                    </nav>
+                </div>
+                <a href="/admin/useraccount" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>Quay lại
+                </a>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-wrapper">
+            <form th:action="@{/admin/accounts/add}" th:object="${account}" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-lg-8">
+                        <!-- Account Information -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="fas fa-user-cog"></i>
+                                Thông tin tài khoản
+                            </h3>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="username" class="form-label">
+                                        Tên đăng nhập <span class="required-mark">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="username" name="username" 
+                                           th:field="*{username}" th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''" 
+                                           placeholder="Nhập tên đăng nhập" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="password" class="form-label">
+                                        Mật khẩu <span class="required-mark">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control" id="password" name="password" 
+                                               th:field="*{password}" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''" 
+                                               placeholder="Nhập mật khẩu" required>
+                                        <button type="button" class="btn btn-outline-secondary position-absolute end-0 top-0 h-100 px-3" 
+                                                style="border-top-left-radius: 0; border-bottom-left-radius: 0;" 
+                                                onclick="togglePassword('password')">
+                                            <i class="fas fa-eye" id="password-toggle"></i>
+                                        </button>
+                                    </div>
+                                    <div class="password-strength" id="password-strength"></div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">
+                                        Email <span class="required-mark">*</span>
+                                    </label>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''" 
+                                           placeholder="Nhập địa chỉ email" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="role" class="form-label">
+                                        Vai trò <span class="required-mark">*</span>
+                                    </label>
+                                    <select class="form-select" id="role" name="role.roleId" 
+                                            th:field="*{role}" th:classappend="${#fields.hasErrors('role')} ? 'is-invalid' : ''" required>
+                                        <option value="">Chọn vai trò</option>
+                                        <option th:each="role : ${roles}" 
+                                                th:value="${role.roleId}" 
+                                                th:text="${role.name}"></option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="fas fa-address-card"></i>
+                                Thông tin cá nhân
+                            </h3>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullName" class="form-label">
+                                        Họ và tên <span class="required-mark">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="fullName" name="fullName" 
+                                           th:field="*{fullName}" th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''" 
+                                           placeholder="Nhập họ và tên đầy đủ" required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Số điện thoại</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" 
+                                           th:field="*{phone}" placeholder="Nhập số điện thoại">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="gender" class="form-label">Giới tính</label>
+                                    <select class="form-select" id="gender" name="gender" th:field="*{gender}">
+                                        <option value="">Chọn giới tính</option>
+                                        <option value="male">Nam</option>
+                                        <option value="female">Nữ</option>
+                                        <option value="other">Khác</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="birthDate" class="form-label">Ngày sinh</label>
+                                    <input type="date" class="form-control" id="birthDate" name="birthDate" 
+                                           th:field="*{birthDate}">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa chỉ</label>
+                                <textarea class="form-control" id="address" name="address" 
+                                          th:field="*{address}" rows="3" 
+                                          placeholder="Nhập địa chỉ chi tiết..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Account Settings -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="fas fa-cogs"></i>
+                                Cài đặt tài khoản
+                            </h3>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="active" 
+                                               name="active" th:field="*{active}" checked>
+                                        <label class="form-check-label" for="active">
+                                            Kích hoạt tài khoản
+                                        </label>
+                                        <small class="form-text text-muted d-block">
+                                            Tài khoản được kích hoạt sẽ có thể đăng nhập và sử dụng hệ thống
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-lg-4">
+                        <!-- Avatar Upload -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="fas fa-user-circle"></i>
+                                Ảnh đại diện
+                            </h3>
+                            
+                            <div class="file-upload-area" onclick="document.getElementById('userImage').click()">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <div class="file-upload-text">
+                                    <p class="mb-2 fw-semibold">Nhấp để tải lên ảnh đại diện</p>
+                                    <small class="text-muted">Định dạng: JPG, PNG<br>Dung lượng tối đa: 2MB</small>
+                                </div>
+                                <button type="button" class="file-upload-btn mt-2">
+                                    <i class="fas fa-upload me-2"></i>Chọn ảnh
+                                </button>
+                            </div>
+                            
+                            <input type="file" id="userImage" name="imageFile" class="file-input" 
+                                   accept="image/*" onchange="previewImage(this)">
+                            
+                            <div id="imagePreview" class="image-preview-container" style="display: none;">
+                                <img id="preview" src="#" alt="Preview" class="image-preview">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeImage()">
+                                    <i class="fas fa-trash me-1"></i>Xóa ảnh
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <h3 class="section-title">
+                                <i class="fas fa-save"></i>
+                                Thao tác
+                            </h3>
+                            
+                            <div class="d-flex flex-column gap-3">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i>Lưu
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="clearFormDraft()">
+                                    <i class="fas fa-trash me-2"></i>Xóa bản nháp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function clearFormDraft() {
+            // Confirm before clearing
+            if (!confirm('Bạn có chắc chắn muốn xóa bản nháp? Tất cả dữ liệu chưa lưu sẽ bị mất.')) {
+                return;
+            }
+
+            // Clear localStorage draft
+            localStorage.removeItem('accountFormDraft');
+
+            // Reset the form
+            const form = document.querySelector('form');
+            form.reset();
+
+            // Reset password strength indicator
+            const strengthIndicator = document.getElementById('password-strength');
+            strengthIndicator.className = 'password-strength';
+            strengthIndicator.style.width = '0%';
+
+            // Reset username status
+            const usernameStatus = document.querySelector('.username-status');
+            if (usernameStatus) {
+                usernameStatus.remove();
+            }
+
+            // Reset image preview
+            removeImage();
+
+            // Reset textarea height
+            const textareas = document.querySelectorAll('textarea');
+            textareas.forEach(textarea => {
+                textarea.style.height = 'auto';
+            });
+
+            // Reset checkbox to default state (checked)
+            const activeCheckbox = document.getElementById('active');
+            activeCheckbox.checked = true;
+
+            // Show success notification
+            showNotification('Đã xóa bản nháp thành công!', 'success');
+        }
+
+        // Image preview functionality
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.querySelector('.file-upload-area').style.display = 'none';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function removeImage() {
+            document.getElementById('userImage').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.querySelector('.file-upload-area').style.display = 'block';
+        }
+        
+        // Toggle password visibility
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const toggle = document.getElementById(fieldId + '-toggle');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                toggle.classList.remove('fa-eye');
+                toggle.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                toggle.classList.remove('fa-eye-slash');
+                toggle.classList.add('fa-eye');
+            }
+        }
+        
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            return strength;
+        }
+        
+        // Enhanced form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const passwordField = document.getElementById('password');
+            const strengthIndicator = document.getElementById('password-strength');
+            
+            // Password strength indicator
+            passwordField.addEventListener('input', function() {
+                const strength = checkPasswordStrength(this.value);
+                strengthIndicator.className = 'password-strength';
+                
+                if (this.value.length === 0) {
+                    strengthIndicator.style.width = '0%';
+                } else if (strength < 3) {
+                    strengthIndicator.classList.add('strength-weak');
+                } else if (strength < 4) {
+                    strengthIndicator.classList.add('strength-medium');
+                } else {
+                    strengthIndicator.classList.add('strength-strong');
+                }
+            });
+            
+            // Real-time validation
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid')) {
+                        validateField(this);
+                    }
+                });
+            });
+            
+            function validateField(field) {
+                let isValid = true;
+                
+                if (field.hasAttribute('required') && !field.value.trim()) {
+                    isValid = false;
+                }
+                
+                // Email validation
+                if (field.type === 'email' && field.value) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(field.value)) {
+                        isValid = false;
+                    }
+                }
+                
+                // Username validation
+                if (field.name === 'username' && field.value) {
+                    if (field.value.length < 3) {
+                        isValid = false;
+                    }
+                }
+                
+                // Password validation
+                if (field.name === 'password' && field.value) {
+                    if (field.value.length < 6) {
+                        isValid = false;
+                    }
+                }
+                
+                if (isValid) {
+                    field.classList.remove('is-invalid');
+                } else {
+                    field.classList.add('is-invalid');
+                }
+                
+                return isValid;
+            }
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                const requiredFields = form.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!validateField(field)) {
+                        isValid = false;
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    
+                    // Smooth scroll to first error
+                    const firstError = form.querySelector('.is-invalid');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                    
+                    // Show notification
+                    showNotification('Vui lòng điền đầy đủ thông tin bắt buộc và kiểm tra lại các trường có lỗi!', 'error');
+                }
+            });
+        });
+        
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : 'success'} position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'} me-2"></i>
+                    ${message}
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+        
+        // File upload enhancements
+        document.getElementById('userImage').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                // Check file size (2MB limit for avatar)
+                if (file.size > 2 * 1024 * 1024) {
+                    showNotification('Kích thước file không được vượt quá 2MB!', 'error');
+                    this.value = '';
+                    return;
+                }
+                
+                // Check file type
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    showNotification('Chỉ chấp nhận file ảnh định dạng JPG, PNG, GIF!', 'error');
+                    this.value = '';
+                    return;
+                }
+                
+                // Preview image if validation passes
+                previewImage(this);
+            }
+        });
+        
+        // Drag and drop functionality for image upload
+        const fileUploadArea = document.querySelector('.file-upload-area');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            fileUploadArea.style.borderColor = '#198754';
+            fileUploadArea.style.backgroundColor = 'rgba(102, 126, 234, 0.1)';
+        }
+        
+        function unhighlight() {
+            fileUploadArea.style.borderColor = '#cbd5e0';
+            fileUploadArea.style.backgroundColor = 'rgba(247, 250, 252, 0.8)';
+        }
+        
+        fileUploadArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                document.getElementById('userImage').files = files;
+                previewImage(document.getElementById('userImage'));
+            }
+        }
+        
+        // Auto-resize textarea
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+            });
+        });
+        
+        // Username availability check (simulated)
+        const usernameField = document.getElementById('username');
+        let usernameTimeout;
+        
+        usernameField.addEventListener('input', function() {
+            clearTimeout(usernameTimeout);
+            const username = this.value.trim();
+            
+            if (username.length >= 3) {
+                usernameTimeout = setTimeout(() => {
+                    checkUsernameAvailability(username);
+                }, 500);
+            }
+        });
+        
+        function checkUsernameAvailability(username) {
+            // Simulate API call - replace with actual endpoint
+            const unavailableUsernames = ['admin', 'root', 'user', 'test', 'demo'];
+            
+            if (unavailableUsernames.includes(username.toLowerCase())) {
+                showUsernameStatus('Tên đăng nhập đã tồn tại', 'error');
+            } else {
+                showUsernameStatus('Tên đăng nhập khả dụng', 'success');
+            }
+        }
+        
+        function showUsernameStatus(message, type) {
+            // Remove existing status
+            const existingStatus = document.querySelector('.username-status');
+            if (existingStatus) {
+                existingStatus.remove();
+            }
+            
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `username-status small mt-1 ${type === 'error' ? 'text-danger' : 'text-success'}`;
+            statusDiv.innerHTML = `<i class="fas fa-${type === 'error' ? 'times-circle' : 'check-circle'} me-1"></i>${message}`;
+            
+            usernameField.parentNode.appendChild(statusDiv);
+        }
+        
+        // Phone number formatting
+        const phoneField = document.getElementById('phone');
+        phoneField.addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, ''); // Remove non-digits
+            
+            if (value.length > 0) {
+                // Format Vietnamese phone number
+                if (value.startsWith('84')) {
+                    value = '+84 ' + value.substring(2);
+                } else if (value.startsWith('0')) {
+                    value = value.substring(1);
+                    value = '+84 ' + value;
+                }
+                
+                // Add spaces for readability
+                if (value.length > 7) {
+                    value = value.replace(/(\+84 \d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+                }
+            }
+            
+            this.value = value;
+        });
+        
+        // Form auto-save to localStorage (draft)
+        function saveFormDraft() {
+            const formData = new FormData(document.querySelector('form'));
+            const draftData = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (key !== 'imageFile') { // Don't save file data
+                    draftData[key] = value;
+                }
+            }
+            
+            localStorage.setItem('accountFormDraft', JSON.stringify(draftData));
+        }
+        
+        function loadFormDraft() {
+            const draft = localStorage.getItem('accountFormDraft');
+            if (draft) {
+                const draftData = JSON.parse(draft);
+                
+                Object.keys(draftData).forEach(key => {
+                    const field = document.querySelector(`[name="${key}"]`);
+                    if (field) {
+                        if (field.type === 'checkbox') {
+                            field.checked = draftData[key] === 'on' || draftData[key] === 'true';
+                        } else {
+                            field.value = draftData[key];
+                        }
+                    }
+                });
+                
+            }
+        }
+        
+        // Auto-save every 30 seconds
+        setInterval(saveFormDraft, 30000);
+        
+        // Clear draft on successful submission
+        document.querySelector('form').addEventListener('submit', function() {
+            setTimeout(() => {
+                localStorage.removeItem('accountFormDraft');
+            }, 1000);
+        });
+        
+        // Load draft on page load
+        window.addEventListener('load', function() {
+            setTimeout(loadFormDraft, 500);
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + S to save (submit form)
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                document.querySelector('form').submit();
+            }
+            
+            // Ctrl + R to reset form
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                if (confirm('Bạn có chắc chắn muốn đặt lại form?')) {
+                    clearFormDraft();
+                }
+            }
+            
+            // Escape to go back
+            if (e.key === 'Escape') {
+                if (confirm('Bạn có muốn quay lại trang danh sách?')) {
+                    window.location.href = '/admin/accounts';
+                }
+            }
+        });
+        
+        // Smooth scroll for form sections
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        // Add section navigation
+        const sectionTitles = document.querySelectorAll('.section-title');
+        sectionTitles.forEach((title, index) => {
+            title.style.cursor = 'pointer';
+            title.addEventListener('click', function() {
+                const card = this.closest('.section-card');
+                card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        
+        // Enhanced error handling for form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tạo tài khoản...';
+            
+            // Re-enable button after 5 seconds (in case of error)
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }, 5000);
+        });
+        
+        // Initialize tooltips if Bootstrap is available
+        if (typeof bootstrap !== 'undefined') {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+        
+        console.log('Account form scripts loaded successfully!');
+    </script>
+</body>
+</html>
