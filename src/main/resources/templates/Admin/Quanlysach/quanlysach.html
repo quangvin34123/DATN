@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý Sách và Phân loại - Thư viện điện tử FPT Polytechnic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Css/admin.css">
+    <link rel="stylesheet" href="/Css/style.css">
+    <link rel="icon" type="image/png" href="/Image/logolibary.png">
+</head>
+<body>
+    <div th:replace="Layout/header :: header"></div>
+
+    <section class="admin-main-section">
+        <div class="container-fluid">
+            <div class="row h-100">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 admin-side-panel h-100">
+                    <h3 class="admin-side-title admin-fade-in">QUẢN TRỊ</h3>
+                    <ul class="nav flex-column">
+                        <li class="admin-side-item">
+                            <a th:href="@{/admin/docgia}"
+                               th:classappend="${activeSection == 'docgia'} ? 'admin-side-link active' : 'admin-side-link'"
+                               data-section="docgia">
+                                <i class="fas fa-users"></i> Quản lý độc giả
+                            </a>
+                        </li>
+                        <li class="admin-side-item">
+                            <a th:href="@{/admin/quanlysach}"
+                               th:classappend="${activeSection == 'quanlysach'} ? 'admin-side-link active' : 'admin-side-link'"
+                               data-section="quanlysach">
+                                <i class="fas fa-book"></i> Quản lý sách và phân loại
+                            </a>
+                        </li>
+                        <li class="admin-side-item">
+                            <a th:href="@{/admin/nhapmuon}"
+                               th:classappend="${activeSection == 'nhapmuon'} ? 'admin-side-link active' : 'admin-side-link'"
+                               data-section="nhapmuon">
+                                <i class="fas fa-exchange-alt"></i> Quản lý phiếu mượn
+                            </a>
+                        </li>
+                        <li class="admin-side-item">
+                            <a th:href="@{/admin/thongbao}"
+                               th:classappend="${activeSection == 'thongbao'} ? 'admin-side-link active' : 'admin-side-link'"
+                               data-section="thongbao">
+                                <i class="fas fa-bell"></i> Quản lý thông báo
+                            </a>
+                        </li>
+                        <li class="admin-side-item">
+                            <a th:href="@{/admin/danhgia}"
+                               th:classappend="${activeSection == 'danhgia'} ? 'admin-side-link active' : 'admin-side-link'"
+                               data-section="danhgia">
+                                <i class="fas fa-star"></i> Quản lý đánh giá
+                            </a>
+                        </li>
+                        <li class="admin-side-item">
+                            <a th:href="@{/admin/thongke}"
+                               th:classappend="${activeSection == 'thongke'} ? 'admin-side-link active' : 'admin-side-link'"
+                               data-section="thongke">
+                                <i class="fas fa-chart-bar"></i> Thống kê
+                            </a>
+                        </li>
+                        <li class="admin-side-item">
+                            <a th:href="@{/admin/lichsu}"
+                               th:classappend="${activeSection == 'lichsu'} ? 'admin-side-link active' : 'admin-side-link'"
+                               data-section="lichsu">
+                                <i class="fas fa-history"></i> Lịch sử
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9 col-lg-10 admin-main-content h-100">
+                    <div class="admin-content-card admin-fade-in h-100 d-flex flex-column">
+                        <div class="admin-section-title">
+                            <h2>QUẢN LÝ SÁCH VÀ PHÂN LOẠI</h2>
+                        </div>
+
+                        <!-- Tabs -->
+                        <ul class="nav nav-tabs" id="managementTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="sach-tab" data-bs-toggle="tab" data-bs-target="#sach" type="button" role="tab" aria-controls="sach" aria-selected="true">Sách</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="loaisach-tab" data-bs-toggle="tab" data-bs-target="#loaisach" type="button" role="tab" aria-controls="loaisach" aria-selected="false">Loại sách</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="danhmuc-tab" data-bs-toggle="tab" data-bs-target="#danhmuc" type="button" role="tab" aria-controls="danhmuc" aria-selected="false">Danh mục</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content flex-grow-1" id="managementTabsContent">
+                            <!-- Sách Tab -->
+                            <div class="tab-pane fade show active" id="sach" role="tabpanel" aria-labelledby="sach-tab">
+                                <div class="management-section">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap" style="padding: 10px;">
+                                        <h3 class="mb-2 mb-md-0">Danh sách sách</h3>
+                                        <form class="d-flex" th:action="@{/admin/quanlysach}" method="get">
+                                            <input class="form-control me-2" type="search" name="sachKeyword"
+                                                   placeholder="Tìm kiếm sách..." th:value="${sachKeyword}">
+                                            <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Mã sách</th>
+                                                    <th>Tên sách</th>
+                                                    <th>Tác giả</th>
+                                                    <th>Nhà xuất bản</th>
+                                                    <th>Danh mục</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="sach : ${sachPage.content}">
+                                                    <td th:text="${sach.maSach}"></td>
+                                                    <td th:text="${sach.tenSach}"></td>
+                                                    <td th:text="${sach.tacGia?.tenTacGia ?: 'N/A'}"></td>
+                                                    <td th:text="${sach.nhaXuatBan?.tenNXB ?: 'N/A'}"></td>
+                                                    <td th:text="${sach.danhMuc?.tenDanhMuc ?: 'N/A'}"></td>
+                                                    <td th:text="${sach.soLuong}"></td>
+                                                    <td>
+                                                        <a th:href="@{/admin/quanlysach/sua-sach(id=${sach.maSach})}"
+                                                           class="btn btn-sm btn-outline-primary me-1" title="Sửa">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a th:href="@{/admin/quanlysach/xoa-sach(id=${sach.maSach})}"
+                                                           class="btn btn-sm btn-outline-danger" title="Xóa"
+                                                           onclick="return confirm('Bạn có chắc muốn xóa sách này?')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${sachPage.content.isEmpty()}">
+                                                    <td colspan="7" class="text-center">Không có sách nào.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="admin-add-btn-container">
+                                        <nav aria-label="Book pagination">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item" th:classappend="${sachPage.first} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach(sachPage=${sachPage.number - 1}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, loaiSachPage=${loaiSachPage.number}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword}, danhMucPage=${danhMucPage.number}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword})}"
+                                                       tabindex="-1">Trước</a>
+                                                </li>
+                                                <li th:each="i : ${#numbers.sequence(0, sachPage.totalPages - 1)}"
+                                                    th:class="${i == sachPage.number} ? 'page-item active' : 'page-item'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach(sachPage=${i}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, loaiSachPage=${loaiSachPage.number}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword}, danhMucPage=${danhMucPage.number}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword})}"
+                                                       th:text="${i + 1}"></a>
+                                                </li>
+                                                <li class="page-item" th:classappend="${sachPage.last} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach(sachPage=${sachPage.number + 1}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, loaiSachPage=${loaiSachPage.number}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword}, danhMucPage=${danhMucPage.number}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword})}">Sau</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                        <a th:href="@{/admin/quanlysach/them-sach}" class="admin-add-btn"><i class="fas fa-plus"></i> Thêm sách</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Loại sách Tab -->
+                            <div class="tab-pane fade" id="loaisach" role="tabpanel" aria-labelledby="loaisach-tab">
+                                <div class="management-section">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap" style="padding: 10px;">
+                                        <h3 class="mb-2 mb-md-0">Danh sách loại sách</h3>
+                                        <form class="d-flex" th:action="@{/admin/quanlysach/loaisach}" method="get">
+                                            <input type="hidden" name="sachPage" th:value="${sachPage.number}"/>
+                                            <input type="hidden" name="sachSize" th:value="${sachPage.size}"/>
+                                            <input type="hidden" name="sachKeyword" th:value="${sachKeyword}"/>
+                                            <input type="hidden" name="danhMucPage" th:value="${danhMucPage.number}"/>
+                                            <input type="hidden" name="danhMucSize" th:value="${danhMucPage.size}"/>
+                                            <input type="hidden" name="danhMucKeyword" th:value="${danhMucKeyword}"/>
+                                            <input class="form-control me-2" type="search" name="loaiSachKeyword"
+                                                   placeholder="Tìm kiếm loại sách..." th:value="${loaiSachKeyword}">
+                                            <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Tên loại sách</th>
+                                                    <th>Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="loaiSach, iterStat : ${loaiSachPage.content}">
+                                                    <td th:text="${iterStat.index + 1 + loaiSachPage.pageable.offset}"></td>
+                                                    <td th:text="${loaiSach.tenLoaiSach}"></td>
+                                                    <td>
+                                                        <a th:href="@{/admin/quanlysach/sua-loai-sach(id=${loaiSach.maLoaiSach})}"
+                                                           class="btn btn-sm btn-outline-primary me-1" title="Sửa">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a th:href="@{/admin/quanlysach/xoa-loai-sach(id=${loaiSach.maLoaiSach})}"
+                                                           class="btn btn-sm btn-outline-danger" title="Xóa"
+                                                           onclick="return confirm('Bạn có chắc muốn xóa loại sách này?')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${loaiSachPage.content.isEmpty()}">
+                                                    <td colspan="3" class="text-center">Không có loại sách nào.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="admin-add-btn-container">
+                                        <nav aria-label="LoaiSach pagination">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item" th:classappend="${loaiSachPage.first} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach/loaisach(loaiSachPage=${loaiSachPage.number - 1}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword}, sachPage=${sachPage.number}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, danhMucPage=${danhMucPage.number}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword})}"
+                                                       tabindex="-1">Trước</a>
+                                                </li>
+                                                <li th:each="i : ${#numbers.sequence(0, loaiSachPage.totalPages - 1)}"
+                                                    th:class="${i == loaiSachPage.number} ? 'page-item active' : 'page-item'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach/loaisach(loaiSachPage=${i}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword}, sachPage=${sachPage.number}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, danhMucPage=${danhMucPage.number}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword})}"
+                                                       th:text="${i + 1}"></a>
+                                                </li>
+                                                <li class="page-item" th:classappend="${loaiSachPage.last} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach/loaisach(loaiSachPage=${loaiSachPage.number + 1}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword}, sachPage=${sachPage.number}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, danhMucPage=${danhMucPage.number}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword})}">Sau</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                        <a th:href="@{/admin/quanlysach/them-loai-sach}" class="admin-add-btn"><i class="fas fa-plus"></i> Thêm loại sách</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Danh mục Tab -->
+                            <div class="tab-pane fade" id="danhmuc" role="tabpanel" aria-labelledby="danhmuc-tab">
+                                <div class="management-section">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap" style="padding: 10px;">
+                                        <h3 class="mb-2 mb-md-0">Danh sách danh mục</h3>
+                                        <form class="d-flex" th:action="@{/admin/quanlysach/danhmuc}" method="get">
+                                            <input type="hidden" name="sachPage" th:value="${sachPage.number}"/>
+                                            <input type="hidden" name="sachSize" th:value="${sachPage.size}"/>
+                                            <input type="hidden" name="sachKeyword" th:value="${sachKeyword}"/>
+                                            <input type="hidden" name="loaiSachPage" th:value="${loaiSachPage.number}"/>
+                                            <input type="hidden" name="loaiSachSize" th:value="${loaiSachPage.size}"/>
+                                            <input type="hidden" name="loaiSachKeyword" th:value="${loaiSachKeyword}"/>
+                                            <input class="form-control me-2" type="search" name="danhMucKeyword"
+                                                   placeholder="Tìm kiếm danh mục..." th:value="${danhMucKeyword}">
+                                            <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Tên danh mục</th>
+                                                    <th>Loại sách</th>
+                                                    <th>Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="danhMuc, iterStat : ${danhMucPage.content}">
+                                                    <td th:text="${iterStat.index + 1 + danhMucPage.pageable.offset}"></td>
+                                                    <td th:text="${danhMuc.tenDanhMuc}"></td>
+                                                    <td th:text="${danhMuc.loaiSach?.tenLoaiSach ?: 'N/A'}"></td>
+                                                    <td>
+                                                        <a th:href="@{/admin/quanlysach/sua-danhmuc(id=${danhMuc.maDanhMuc})}"
+                                                           class="btn btn-sm btn-outline-primary me-1" title="Sửa">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a th:href="@{/admin/quanlysach/xoa-danhmuc(id=${danhMuc.maDanhMuc})}"
+                                                           class="btn btn-sm btn-outline-danger" title="Xóa"
+                                                           onclick="return confirm('Bạn có chắc muốn xóa danh mục này?')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${danhMucPage.content.isEmpty()}">
+                                                    <td colspan="4" class="text-center">Không có danh mục nào.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="admin-add-btn-container">
+                                        <nav aria-label="DanhMuc pagination">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item" th:classappend="${danhMucPage.first} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach/danhmuc(danhMucPage=${danhMucPage.number - 1}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword}, sachPage=${sachPage.number}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, loaiSachPage=${loaiSachPage.number}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword})}"
+                                                       tabindex="-1">Trước</a>
+                                                </li>
+                                                <li th:each="i : ${#numbers.sequence(0, danhMucPage.totalPages - 1)}"
+                                                    th:class="${i == danhMucPage.number} ? 'page-item active' : 'page-item'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach/danhmuc(danhMucPage=${i}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword}, sachPage=${sachPage.number}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, loaiSachPage=${loaiSachPage.number}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword})}"
+                                                       th:text="${i + 1}"></a>
+                                                </li>
+                                                <li class="page-item" th:classappend="${danhMucPage.last} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{/admin/quanlysach/danhmuc(danhMucPage=${danhMucPage.number + 1}, danhMucSize=${danhMucPage.size}, danhMucKeyword=${danhMucKeyword}, sachPage=${sachPage.number}, sachSize=${sachPage.size}, sachKeyword=${sachKeyword}, loaiSachPage=${loaiSachPage.number}, loaiSachSize=${loaiSachPage.size}, loaiSachKeyword=${loaiSachKeyword})}">Sau</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                        <a th:href="@{/admin/quanlysach/them-danhmuc}" class="admin-add-btn"><i class="fas fa-plus"></i> Thêm danh mục</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div th:replace="Layout/footer :: footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('#managementTabs .nav-link');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('data-bs-target'));
+                    const allTabs = document.querySelectorAll('.tab-pane');
+                    const allTabLinks = document.querySelectorAll('#managementTabs .nav-link');
+                    
+                    allTabs.forEach(t => t.classList.remove('show', 'active'));
+                    allTabLinks.forEach(t => t.classList.remove('active'));
+                    
+                    if (target) {
+                        target.classList.add('show', 'active');
+                        this.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

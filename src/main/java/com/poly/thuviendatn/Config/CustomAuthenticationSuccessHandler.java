@@ -1,45 +1,30 @@
 package com.poly.thuviendatn.Config;
 
-import com.poly.thuviendatn.Model.Account;
-import com.poly.thuviendatn.Repository.AccountRepository;
-import com.poly.thuviendatn.Service.EmailService;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @PostConstruct
-    public void init() {
-        System.out.println("AccountRepository: " + accountRepository);
-    }
-
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException {
-        String username = authentication.getName();
-        Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
-
-        if (account.getEmail() != null && !account.getEmail().isEmpty()) {
-            emailService.sendLoginNotification(account.getEmail(), username);
-        }
-
-        String redirectUrl = authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN")) ? "/" : "/";
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        String role = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse("ROLE_USER"); // Default to ROLE_USER if no role is found
+        String redirectUrl = switch (role) {
+            case "ROLE_ADMIN" -> "/admin/dashboard";
+            case "ROLE_STAFF" -> "/staff/dashboard";
+            case "ROLE_USER" -> "/user/dashboard";
+            default -> "/home";
+        };
         response.sendRedirect(redirectUrl);
     }
 }

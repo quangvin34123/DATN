@@ -1,7 +1,7 @@
 package com.poly.thuviendatn.Controller;
 
-import com.poly.thuviendatn.Model.Borrowing;
-import com.poly.thuviendatn.Repository.BorrowingRepository;
+import com.poly.thuviendatn.Model.PhieuMuon;
+import com.poly.thuviendatn.Repository.PhieuMuonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,49 +14,49 @@ import java.util.List;
 @Controller
 public class PaymentController {
 
-    private final BorrowingRepository borrowingRepository;
+    private final PhieuMuonRepository phieuMuonRepository;
 
     @Autowired
-    public PaymentController(BorrowingRepository borrowingRepository) {
-        this.borrowingRepository = borrowingRepository;
+    public PaymentController(PhieuMuonRepository phieuMuonRepository) {
+        this.phieuMuonRepository = phieuMuonRepository;
     }
 
-    @GetMapping("/payment")
+    @GetMapping("/thanhtoan")
     public String showPaymentPage(Model model) {
-        // Fetch all borrowings from the database
-        List<Borrowing> borrowedBooks = borrowingRepository.findAll();
+        // Lấy tất cả phiếu mượn từ cơ sở dữ liệu
+        List<PhieuMuon> phieuMuons = phieuMuonRepository.findAll();
 
-        // Calculate overdue status and fines as of May 19, 2025
-        LocalDate today = LocalDate.of(2025, 5, 19);
-        for (Borrowing borrowing : borrowedBooks) {
-            if (borrowing.getDueDate().isBefore(today) && borrowing.getReturnDate() == null) {
-                borrowing.setStatus("overdue");
-                long daysOverdue = java.time.temporal.ChronoUnit.DAYS.between(borrowing.getDueDate(), today);
-                borrowing.setFine(BigDecimal.valueOf(daysOverdue * 10000)); // 10,000 VNĐ per day
-            } else if (borrowing.getReturnDate() == null) {
-                borrowing.setStatus("borrowed");
+        // Tính trạng thái và tiền phạt dựa trên ngày hiện tại
+        LocalDate today = LocalDate.now();
+        for (PhieuMuon phieuMuon : phieuMuons) {
+            if (phieuMuon.getNgayHetHan().isBefore(today) && phieuMuon.getNgayTra() == null) {
+                phieuMuon.setTrangThai("quahan");
+                long daysOverdue = java.time.temporal.ChronoUnit.DAYS.between(phieuMuon.getNgayHetHan(), today);
+                phieuMuon.setTienPhat(BigDecimal.valueOf(daysOverdue * 10000)); // 10,000 VNĐ mỗi ngày
+            } else if (phieuMuon.getNgayTra() == null) {
+                phieuMuon.setTrangThai("dangmuon");
             } else {
-                borrowing.setStatus("returned");
+                phieuMuon.setTrangThai("datra");
             }
         }
 
-        // Mock bank payment URL
-        String bankPaymentUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=50000&vnp_ReturnUrl=http://localhost:8080/payment/return";
+        // Mock URL thanh toán ngân hàng
+        String bankPaymentUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=50000&vnp_ReturnUrl=http://localhost:8080/thanhtoan/ketqua";
 
-        // Add data to model
-        model.addAttribute("borrowedBooks", borrowedBooks);
+        // Thêm dữ liệu vào model
+        model.addAttribute("phieuMuons", phieuMuons);
         model.addAttribute("bankPaymentUrl", bankPaymentUrl);
 
-        return "Payment/paymen"; // Maps to payment.html
+        return "public/thanhtoan"; // Maps to thanhtoan.html
     }
 
-    @GetMapping("/payment/success")
+    @GetMapping("/thanhtoan/thanhcong")
     public String paymentSuccess() {
-        return "Payment/payment-success";
+        return "public/thanhtoan-thanhcong";
     }
 
-    @GetMapping("/payment/fail")
+    @GetMapping("/thanhtoan/thatbai")
     public String paymentFail() {
-        return "Payment/payment-failed";
+        return "public/thanhtoan-thatbai";
     }
 }

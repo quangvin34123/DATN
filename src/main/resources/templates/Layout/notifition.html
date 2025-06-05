@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thông Báo Thư Viện</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/Css/style.css">
+  <link rel="stylesheet" href="/Css/layout.css">
+  <link rel="icon" type="image/png" href="/Image/logolibary.png">
+  <style>
+    body {
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    }
+
+    .post-box {
+      background-color: #fff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #dee2e6;
+      transition: all 0.2s;
+      padding: 16px;
+    }
+    
+    .post-box.important {
+      border-left: 4px solid #ffc107;
+      background-color: #fff8e1;
+    }
+    
+    .post-box.urgent {
+      border-left: 4px solid #f44336;
+      background-color: #ffebee;
+    }
+
+    .post-box:hover {
+      background-color: #f8f9fa;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .line-clamp-1 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .section-title {
+      font-weight: bold;
+      color: #198754;
+    }
+    
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      padding: 3px 6px;
+      border-radius: 50%;
+      font-size: 10px;
+    }
+    
+    .urgent-badge {
+      background-color: #f44336;
+      color: white;
+    }
+    
+    .important-badge {
+      background-color: #ffc107;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <div th:replace="Layout/header :: header"></div>
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Thông báo Thư viện</h2>
+      <p class="text-muted">Cập nhật mới nhất về hoạt động, sự kiện và thông tin quan trọng từ thư viện</p>
+      <div class="mx-auto mt-2" style="width: 100px; height: 3px; background-color: #198754;"></div>
+    </div>
+
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+      <h4 class="section-title mb-0">Thông báo mới nhất</h4>
+      <div>
+        <button class="btn btn-sm btn-outline-success me-2">Xem tất cả</button>
+        <button class="btn btn-sm btn-success">Đăng ký nhận thông báo</button>
+      </div>
+    </div>
+
+    <div class="list-group">
+      <!-- Thông báo khẩn -->
+      <a href="#" class="list-group-item list-group-item-action post-box urgent position-relative">
+        <span class="notification-badge urgent-badge"><i class="fas fa-exclamation"></i></span>
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1 line-clamp-1">[KHẨN] Thư viện đóng cửa tạm thời từ 01/06 đến 05/06 để bảo trì</h5>
+          <small>26/05/2025</small>
+        </div>
+        <p class="mb-1 text-muted">Bởi <strong>Ban quản lý</strong> • 215 lượt xem • 12 phản hồi</p>
+        <small class="text-danger"><i class="fas fa-clock"></i> Thông báo quan trọng</small>
+      </a>
+
+      <!-- Thông báo quan trọng -->
+      <a href="#" class="list-group-item list-group-item-action post-box important position-relative">
+        <span class="notification-badge important-badge"><i class="fas fa-star"></i></span>
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1 line-clamp-1">[Ưu đãi] Giảm 20% phí thẻ thành viên khi đăng ký trong tháng 6</h5>
+          <small>25/05/2025</small>
+        </div>
+        <p class="mb-1 text-muted">Bởi <strong>Phòng dịch vụ</strong> • 180 lượt xem • 8 phản hồi</p>
+        <small class="text-warning"><i class="fas fa-bullhorn"></i> Chương trình khuyến mãi</small>
+      </a>
+
+      <!-- Thông báo thường -->
+      <a href="#" class="list-group-item list-group-item-action post-box">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1 line-clamp-1">Triển lãm sách mới tháng 6 tại tầng 1 từ 10/06 đến 30/06</h5>
+          <small>24/05/2025</small>
+        </div>
+        <p class="mb-1 text-muted">Bởi <strong>Phòng sưu tập</strong> • 95 lượt xem • 3 phản hồi</p>
+        <small class="text-success"><i class="fas fa-calendar-alt"></i> Sự kiện thư viện</small>
+      </a>
+      
+      <!-- Thông báo thường -->
+      <a href="#" class="list-group-item list-group-item-action post-box">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1 line-clamp-1">Danh sách sách mới nhập về trong tháng 5/2025</h5>
+          <small>20/05/2025</small>
+        </div>
+        <p class="mb-1 text-muted">Bởi <strong>Phòng bổ sung</strong> • 320 lượt xem • 5 phản hồi</p>
+        <small class="text-primary"><i class="fas fa-book"></i> Tài liệu mới</small>
+      </a>
+    </div>
+    
+    <!-- Phân loại thông báo -->
+    <div class="row mt-5">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-success">
+          <div class="card-header bg-success text-white">
+            <h5 class="card-title mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Thông báo khẩn</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Đóng cửa tạm thời</li>
+              <li class="list-group-item">Thay đổi giờ mở cửa</li>
+              <li class="list-group-item">Sự cố hệ thống</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-warning">
+          <div class="card-header bg-warning">
+            <h5 class="card-title mb-0"><i class="fas fa-star me-2"></i>Thông báo quan trọng</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Thay đổi quy định</li>
+              <li class="list-group-item">Chương trình ưu đãi</li>
+              <li class="list-group-item">Sự kiện đặc biệt</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-primary">
+          <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0"><i class="fas fa-info-circle me-2"></i>Thông báo thường</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Sách mới</li>
+              <li class="list-group-item">Hoạt động CLB</li>
+              <li class="list-group-item">Thống kê thư viện</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="Layout/footer :: footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

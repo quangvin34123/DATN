@@ -1,7 +1,7 @@
 package com.poly.thuviendatn.Service;
 
-import com.poly.thuviendatn.Model.Account;
-import com.poly.thuviendatn.Repository.AccountRepository;
+import com.poly.thuviendatn.Model.TaiKhoan;
+import com.poly.thuviendatn.Repository.TaiKhoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,22 +16,28 @@ import java.util.Collections;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private TaiKhoanRepository taiKhoanRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountRepository.findByUsername(username)
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        if (!account.isActive()) {
-            throw new UsernameNotFoundException("Account is disabled");
-        }
+        String role = switch (taiKhoan.getQuyen().getMaQuyen()) {
+            case 1 -> "ROLE_ADMIN";
+            case 2 -> "ROLE_STAFF";
+            case 3 -> "ROLE_USER";
+            default -> throw new IllegalStateException("Invalid role: " + taiKhoan.getQuyen().getMaQuyen());
+        };
 
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + account.getRole().getName());
         return new User(
-                account.getUsername(),
-                account.getPassword(),
-                Collections.singletonList(authority)
+                taiKhoan.getUsername(),
+                taiKhoan.getPassword(),
+                taiKhoan.isEnabled(), // Account enabled status
+                true, // accountNonExpired
+                true, // credentialsNonExpired
+                true, // accountNonLocked
+                Collections.singletonList(new SimpleGrantedAuthority(role))
         );
     }
 }

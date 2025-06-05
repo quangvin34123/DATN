@@ -9,11 +9,11 @@ public class BorrowedbookController {
 
     @GetMapping("/borrowedbook")
     public String showBorrowedBookPage(Model model) {
-        return "Public/borrowedbook";  // tương ứng file: templates/Public/borrowedbook.html
+        return "Public/sachdangmuon";  // tương ứng file: templates/Public/borrowedbook.html
     }
 
     @GetMapping("/followedbook")
     public String showgfollowedBookPage(Model model) {
-        return "Public/followedbooks";  // tương ứng file: templates/Public/borrowedbook.html
+        return "Public/sachdangtheodoi";  // tương ứng file: templates/Public/borrowedbook.html
     }
 }
